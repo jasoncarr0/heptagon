@@ -59,7 +59,10 @@ executable heptagon
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.6 && <4.10,
                        happstack-server >= 7.4.6.2,
-                       blaze-html >= 0.8
+                       blaze-html >= 0.8,
+                       logging >= 3.0,
+                       text >= 1.2,
+                       transformers >= 0.5
   
   -- Directories containing source files.
   -- hs-source-dirs:      
