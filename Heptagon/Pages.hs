@@ -1,13 +1,13 @@
 module Heptagon.Pages
-(
+( asContentType
 ) where
 
 import Happstack.Server.Response
-import Happstack.Server.Types (setHeaderBS)
+import Happstack.Server.Types (setHeaderBS, Response (..))
 
 import qualified Data.ByteString.Char8 as C
 
-asContentType :: Response a -> String -> Response a
-asContentType res contentType = setHeaderBS (C.pack "Content-Type") (C.pack contentType)
+asContentType :: Response -> String -> Response 
+asContentType res contentType = setHeaderBS (C.pack "Content-Type") (C.pack contentType) res
 
 

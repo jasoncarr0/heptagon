@@ -1,26 +1,27 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Heptagon.Pages.Login
 ( loginPage
 ) where
 
 import Happstack.Server
 
-import Heptagon.Pages (asContentType)
 import Heptagon.User
 import Heptagon.User.Authenticate
 
 import Prelude hiding (span)
-import Text.Blaze.Html5
-import Text.Blaze.Html.Renderer.Pretty
 
-loginPage :: ServerPart String
+import Control.Monad (mplus)
+
+loginPage :: ServerPart Response
 loginPage = do
-            getLogin <|> postLogin
+            getLogin `mplus` postLogin
 
-getLogin :: ServerPart String
-    ok $ asContentType "text/html" $ toResponse pageHtml
+getLogin :: ServerPart Response
+getLogin = ok $ {-asContentType "text/html" $-} toResponse pageHtml
 
-postLogin :: ServerPart String
-    return ""
+postLogin :: ServerPart Response
+postLogin = return $ toResponse ("" :: String)
 
 pageHtml :: String
 pageHtml = "Please login"

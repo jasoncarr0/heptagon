@@ -8,11 +8,13 @@ import Control.Monad (msum)
 
 import qualified Data.Text as T
 
-import Happstack.Server (simpleHTTP, nullConf, ok, Conf, ServerPart)
-
-import Text.Blaze.Html
+import Happstack.Server 
+import Happstack.Server.Routing (dir, nullDir)
 
 import qualified Heptagon.Pages.Index as Index
+import qualified Heptagon.Pages.Login as Login
+import Heptagon.User 
+import Heptagon.User.Authenticate 
 import Heptagon.Logging 
 
 
@@ -20,11 +22,13 @@ config :: Conf
 config = nullConf
 
 main :: IO ()
-main = withStdoutLogging $ 
-    simpleHTTP nullConf $
-    msum [nullDir >>  indexPage
-         ,dir "login" loginPage
-         ]
+main = do
+    makeUser (User 0 "jon" "Jon")
+    withStdoutLogging $ 
+        simpleHTTP nullConf $
+        msum [ nullDir >>  Index.indexPage
+             , dir "login" Login.loginPage
+             ]
 
 indexPage :: ServerPart String
 indexPage = logServerPart (ok Index.pageHtml)

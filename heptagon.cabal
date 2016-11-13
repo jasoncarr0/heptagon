@@ -59,12 +59,11 @@ executable heptagon
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.6 && <4.10,
                        happstack-server >= 7.4.6.2,
-                       blaze-html >= 0.8,
                        logging >= 3.0,
                        text >= 1.2,
                        transformers >= 0.4,
-                       groundhog >= 0.5,
-                       groundhog-postgresql >= 0.5
+                       postgresql-simple >= 0.5,
+                       bytestring >= 0.10
                        
   -- Directories containing source files.
   -- hs-source-dirs:      
