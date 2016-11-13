@@ -18,7 +18,7 @@ encryptPass = const 0
 data AuthError = AuthenticationFailed | NoSuchUser | DuplicateUser
 
 userDB :: ConnectInfo
-userDB = ConnectInfo "localhost" 5432 "" "" "users"
+userDB = ConnectInfo "digitalocean" 5432 "" "" "users"
 
 
 authenticate :: String -> String -> IO (Maybe User)
