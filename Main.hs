@@ -23,7 +23,9 @@ config = nullConf
 
 main :: IO ()
 main = do
-    makeUser (User 0 "jon" "Jon")
+    user <- authenticate "jon" "password"
+    --user <- makeUser (User 0 "jon" "Jon") "password"
+    print user
     withStdoutLogging $ 
         simpleHTTP nullConf $
         msum [ nullDir >>  Index.indexPage
@@ -32,4 +34,5 @@ main = do
 
 indexPage :: ServerPart String
 indexPage = logServerPart (ok Index.pageHtml)
+
 

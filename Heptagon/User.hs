@@ -5,9 +5,9 @@ module Heptagon.User
 import Data.Int (Int64 (..))
 
 data User = User 
-    { id :: Int64
+    { userId :: Int64
     , userName :: String
-    , name :: String
-    }
+    , userRealName :: String
+    } deriving (Eq, Ord, Show)
 
     
