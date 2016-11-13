@@ -22,7 +22,8 @@ config = nullConf
 main :: IO ()
 main = withStdoutLogging $ 
     simpleHTTP nullConf $
-    msum [indexPage
+    msum [nullDir >>  indexPage
+         ,dir "login" loginPage
          ]
 
 indexPage :: ServerPart String

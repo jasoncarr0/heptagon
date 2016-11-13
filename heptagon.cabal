@@ -62,8 +62,10 @@ executable heptagon
                        blaze-html >= 0.8,
                        logging >= 3.0,
                        text >= 1.2,
-                       transformers >= 0.5
-  
+                       transformers >= 0.4,
+                       groundhog >= 0.5,
+                       groundhog-postgresql >= 0.5
+                       
   -- Directories containing source files.
   -- hs-source-dirs:      
   
