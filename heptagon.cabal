@@ -64,7 +64,9 @@ executable heptagon
                        transformers >= 0.4,
                        postgresql-simple >= 0.5,
                        bytestring >= 0.10,
-                       PBKDF2 >= 0.2
+                       PBKDF2 >= 0.2,
+                       parsec >= 3.1.10,
+                       containers >= 0.4
                        
   -- Directories containing source files.
   -- hs-source-dirs:      
