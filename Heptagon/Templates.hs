@@ -9,10 +9,11 @@ import Data.Map
 import Text.Parsec
 import Heptagon.Templates.Inject
 
-data TemplateTerm = RawHTML String | VarInj String | Tag String deriving Show
+data TemplateTerm = RawHTML String | VarInj [String] | Tag String deriving Show
 
---splitHtml :: String -> [TemplateTerm]
---splitHtml = many (varInject <|> templateTag <|> rawString)
+interpet :: [TemplateTerm] -> TMap -> String
+interpet = undefined
+
 
 parseAll :: Stream s m Char => ParsecT s u m [TemplateTerm]
 parseAll = many (varInject <|> templateTag <|> rawString)
@@ -21,7 +22,15 @@ rawString :: Stream s m Char => ParsecT s u m TemplateTerm
 rawString = RawHTML <$> many1 ((notFollowedBy $ try startTag <|> try startVar) >> anyChar)
 
 varInject :: Stream s m Char => ParsecT s u m TemplateTerm
-varInject = VarInj <$> try (startVar >> spaces >> manyTill anyChar (try $ spaces >> endVar))
+varInject = VarInj <$> (try $ do
+    startVar
+    vs <- vars
+    endVar
+    return vs)
+
+vars :: Stream s m Char => ParsecT s u m [String]
+vars = sepBy1 (many1 alphaNum) (char '.')
+
 
 templateTag :: Stream s m Char => ParsecT s u m TemplateTerm
 templateTag = Tag <$> (try $ startTag >> spaces >> manyTill anyChar (try $ spaces >> endTag))
