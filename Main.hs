@@ -16,6 +16,7 @@ import qualified Heptagon.Pages.Login as Login
 import Heptagon.User 
 import Heptagon.User.Authenticate 
 import Heptagon.Logging 
+import Heptagon.Templates
 import Heptagon.Templates.Inject
 
 
