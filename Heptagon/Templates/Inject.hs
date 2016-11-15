@@ -4,6 +4,7 @@ module Heptagon.Templates.Inject
 ( TVal (..)
 , TMap
 , Inject (..)
+, resolveVars
 ) where
 
 import Data.Foldable as F (toList)
@@ -15,6 +16,12 @@ data TVal = TVal
     } 
 
 type TMap = (String -> Maybe TVal, [String])
+
+resolveVars :: [String] -> TMap -> Maybe String
+resolveVars (st:sts) tmap = expand <$> ((fst tmap st) >>= (resolveVars' sts)) where
+    resolveVars' :: [String] -> TVal -> Maybe TVal
+    resolveVars' [] v = Just v
+    resolveVars' (st:sts) v = (fst (subMap v) st) >>= resolveVars' sts
 
 instance Show TVal where
     show (TVal str (f, keys) iter) = 
@@ -34,8 +41,12 @@ noMap = (const Nothing, [])--const Nothing
 class Inject a where
     inject :: a -> TVal
 
+
 instance Inject a => Inject (String -> a) where
     inject f = TVal "FUNCTION" (Just . inject . f, []) []
+
+instance Inject String where
+    inject str = TVal str noMap []
 
 instance {-# OVERLAPPABLE #-} (Foldable f, Inject a, Show (f a)) => Inject (f a) where
     inject xs = TVal (show xs) noMap (inject <$> F.toList xs)
