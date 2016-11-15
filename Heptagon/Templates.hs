@@ -2,25 +2,29 @@
 
 module Heptagon.Templates 
 ( TVal (..)
+, parseAll
 ) where
 
 import Data.Map
 import Text.Parsec
 import Heptagon.Templates.Inject
 
-data TemplateTerm = RawHTML String | VarInj String | Tag String
+data TemplateTerm = RawHTML String | VarInj String | Tag String deriving Show
 
 --splitHtml :: String -> [TemplateTerm]
 --splitHtml = many (varInject <|> templateTag <|> rawString)
 
+parseAll :: Stream s m Char => ParsecT s u m [TemplateTerm]
+parseAll = many (varInject <|> templateTag <|> rawString)
+
 rawString :: Stream s m Char => ParsecT s u m TemplateTerm
-rawString = RawHTML <$> manyTill anyChar (startVar <|> startTag)
+rawString = RawHTML <$> many1 ((notFollowedBy $ try startTag <|> try startVar) >> anyChar)
 
 varInject :: Stream s m Char => ParsecT s u m TemplateTerm
-varInject = VarInj <$> (startVar >> manyTill (notFollowedBy startVar) anyChar >> endVar)
+varInject = VarInj <$> try (startVar >> spaces >> manyTill anyChar (try $ spaces >> endVar))
 
 templateTag :: Stream s m Char => ParsecT s u m TemplateTerm
-templateTag = Tag <$> (startTag >> manyTill (notFollowedBy startTag) anyChar >> endTag)
+templateTag = Tag <$> (try $ startTag >> spaces >> manyTill anyChar (try $ spaces >> endTag))
 
 
 startVar :: Stream s m Char => ParsecT s u m String
