@@ -10,8 +10,8 @@ module Heptagon.Templates.Types
 
 import Data.Foldable as F (toList)
 
-resolveVars :: [String] -> TMap -> Maybe String
-resolveVars (st:sts) tmap = expand <$> ((fst tmap st) >>= (resolveVars' sts)) where
+resolveVars :: [String] -> TMap -> Maybe TVal
+resolveVars (st:sts) tmap = ((fst tmap st) >>= (resolveVars' sts)) where
     resolveVars' :: [String] -> TVal -> Maybe TVal
     resolveVars' [] v = Just v
     resolveVars' (st:sts) v = (fst (subMap v) st) >>= resolveVars' sts

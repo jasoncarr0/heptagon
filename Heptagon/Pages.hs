@@ -5,6 +5,7 @@ module Heptagon.Pages
 , urls
 , urlsVal
 , pathOf
+, fromMap --Templates
 ) where
 
 import Data.Map.Lazy
@@ -29,7 +30,7 @@ fromEither (Left s) = internalServerError (toResponse $ "Page error: " ++ show s
 fromEither (Right p) = ok $ toResponse p
 
 fromTemplate :: String -> TMap -> ServerPart Response
-fromTemplate s tm = fromEither $ applyTemplate s tm
+fromTemplate s tm = fromEither $ applyTemplate tm s
 
 urlsVal :: TVal
 urlsVal = inject urls

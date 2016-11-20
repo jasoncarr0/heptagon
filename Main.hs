@@ -17,7 +17,6 @@ import Heptagon.User
 import Heptagon.User.Authenticate 
 import Heptagon.Logging 
 import Heptagon.Templates
-import Heptagon.Urls
 
 config :: Conf
 config = nullConf
