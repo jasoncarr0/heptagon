@@ -7,6 +7,7 @@ module Heptagon.Templates
 , applyTemplate
 , interpret
 , fromMap
+, putTMap
 ) where
 
 import Data.Map

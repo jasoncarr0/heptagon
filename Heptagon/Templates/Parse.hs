@@ -30,8 +30,8 @@ templateTag :: Stream s m Char => ParsecT s u m TemplateTerm
 templateTag = do
     try $ startTag
     spaces 
-    words <- manyTill (many1 anyChar >> many1 space) (try $ spaces >> endTag)
-    return $ Tag words
+    inside <- manyTill anyChar (try $ spaces >> endTag)
+    return $ Tag $ words inside
 
 
 startVar :: Stream s m Char => ParsecT s u m String

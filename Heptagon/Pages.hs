@@ -38,7 +38,8 @@ urlsVal = inject urls
 type Path = String
 
 urls :: Map String Path
-urls = insert "" "" $
+urls = insert "index" "/index.html" $
+       insert "login" "/login.html" $
        empty
 
 pathOf :: String -> Path
