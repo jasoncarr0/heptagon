@@ -2,20 +2,13 @@
 
 module Heptagon.Templates.Types
 ( TVal (..)
-, TMap
+, TMap (..)
+, TemplateTerm (..)
 , Inject (..)
 , resolveVars
 ) where
 
 import Data.Foldable as F (toList)
-
-data TVal = TVal 
-    { expand   :: String
-    , subMap   :: TMap
-    , iterable :: [TVal]
-    } 
-
-type TMap = (String -> Maybe TVal, [String])
 
 resolveVars :: [String] -> TMap -> Maybe String
 resolveVars (st:sts) tmap = expand <$> ((fst tmap st) >>= (resolveVars' sts)) where
@@ -23,6 +16,14 @@ resolveVars (st:sts) tmap = expand <$> ((fst tmap st) >>= (resolveVars' sts)) wh
     resolveVars' [] v = Just v
     resolveVars' (st:sts) v = (fst (subMap v) st) >>= resolveVars' sts
 
+data TemplateTerm = RawHTML String |  VarInj [String] | Tag [String]
+data TVal = TVal 
+    { expand   :: String
+    , subMap   :: TMap
+    , iterable :: [TVal]
+    } 
+
+type TMap = (String -> Maybe TVal, [String])
 instance Show TVal where
     show (TVal str (f, keys) iter) = 
         "TVal " ++ show str ++

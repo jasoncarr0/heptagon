@@ -1,12 +1,11 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Heptagon.Templates.Parse
-( applyTemplate
-, parser
+( parser
 ) where
 
 import Text.Parsec 
-
-applyTemplate :: String -> TMap -> Either ParseError String
-applyTemplate str tmap = flip interpret tmap <$> (parse parser "text" str)
+import Heptagon.Templates.Types
 
 
 parser :: Stream s m Char => ParsecT s u m [TemplateTerm]
@@ -27,9 +26,12 @@ varInject = VarInj <$> (try $ do
 vars :: Stream s m Char => ParsecT s u m [String]
 vars = sepBy1 (many1 alphaNum) (char '.')
 
-
 templateTag :: Stream s m Char => ParsecT s u m TemplateTerm
-templateTag = Tag <$> (try $ startTag >> spaces >> manyTill anyChar (try $ spaces >> endTag))
+templateTag = do
+    try $ startTag
+    spaces 
+    words <- manyTill (many1 anyChar >> many1 space) (try $ spaces >> endTag)
+    return $ Tag words
 
 
 startVar :: Stream s m Char => ParsecT s u m String
