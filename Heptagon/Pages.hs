@@ -2,6 +2,9 @@ module Heptagon.Pages
 ( withContentType
 , baseVarsMap
 , fromTemplate
+, urls
+, urlsVal
+, pathOf
 ) where
 
 import Data.Map.Lazy
@@ -27,4 +30,16 @@ fromEither (Right p) = ok $ toResponse p
 
 fromTemplate :: String -> TMap -> ServerPart Response
 fromTemplate s tm = fromEither $ applyTemplate s tm
+
+urlsVal :: TVal
+urlsVal = inject urls
+
+type Path = String
+
+urls :: Map String Path
+urls = insert "" "" $
+       empty
+
+pathOf :: String -> Path
+pathOf = (!) urls
 

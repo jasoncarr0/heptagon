@@ -5,7 +5,7 @@ module Heptagon.Templates
 , TMap (..)
 , applyTemplate
 , interpret
-, urlsVal
+, fromMap
 ) where
 
 import Data.Map
@@ -22,9 +22,6 @@ render tmap str = case applyTemplate str tmap of
     Left er -> show er
     Right s -> s
 
-
-urlsVal :: TVal
-urlsVal = inject urls
 
 splitAtFirst :: (a -> Bool) -> [a] -> ([a], [a])
 splitAtFirst p [] = ([], [])
@@ -44,3 +41,6 @@ interpret ((Tag str):strs) tmap = doTag str
 
 doTag :: [String] -> String
 doTag = concat
+
+fromMap :: Map String TVal -> TMap
+fromMap m = (Just . (!) m, keys m)
