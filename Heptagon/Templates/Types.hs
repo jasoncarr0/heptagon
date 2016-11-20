@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances, UndecidableInstances #-}
 
-module Heptagon.Templates.Inject
+module Heptagon.Templates.Types
 ( TVal (..)
 , TMap
 , Inject (..)
