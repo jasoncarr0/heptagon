@@ -18,7 +18,7 @@ import Heptagon.User.Authenticate
 import Heptagon.Logging 
 import Heptagon.Templates
 import Heptagon.Templates.Inject
-
+import Heptagon.Urls
 
 config :: Conf
 config = nullConf
@@ -33,6 +33,8 @@ main = do
         msum [ nullDir >>  Index.indexPage
              , dir "login" Login.loginPage
              ]
+
+
 
 indexPage :: ServerPart String
 indexPage = logServerPart (ok Index.pageHtml)
